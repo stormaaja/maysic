@@ -1,12 +1,12 @@
 {
   "name": "maysic",
   "version": "0.0.1",
-  "main": "src/index.ts",
   "description": "Maysic Compiler",
+  "main": "src/maysic.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "start": "tsc && node out/index.js"
+    "start": "tsc && node out/maysic.js"
   },
   "repository": {
     "type": "git",
