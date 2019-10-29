@@ -63,3 +63,6 @@ typings/
 # VSCode
 .vscode
 *.code-workspace
+
+# Build dir
+out
