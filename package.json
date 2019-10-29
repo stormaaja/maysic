@@ -1,0 +1,41 @@
+{
+  "name": "maysic",
+  "version": "0.0.1",
+  "description": "Maysic compiler",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "start": "tsc && node out/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stormaaja/maysic.git"
+  },
+  "keywords": [
+    "compiler"
+  ],
+  "author": "Matti Ahinko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stormaaja/maysic/issues"
+  },
+  "homepage": "https://github.com/stormaaja/maysic#readme",
+  "devDependencies": {
+    "@types/node": "^12.11.7",
+    "@typescript-eslint/eslint-plugin": "^2.6.0",
+    "@typescript-eslint/parser": "^2.6.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "prettier": "^1.18.2"
+  },
+  "dependencies": {
+    "typescript": "^3.6.4"
+  }
+}
