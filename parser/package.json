@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "gen-parser": "syntax-cli -g src/ast/lexer.g -m LALR1 -o lib/Parser/yyparse.js",
+    "gen-parser": "syntax-cli -g src/parser/lexer.g -m LALR1 -o lib/Parser/yyparse.js",
     "start": "tsc && node out/src/parser.js"
   },
   "repository": {
