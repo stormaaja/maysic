@@ -1,19 +1,20 @@
 {
-  "name": "maysic",
+  "name": "maysic-parser",
   "version": "0.0.1",
-  "description": "Maysic Compiler",
-  "main": "src/maysic.ts",
+  "description": "Maysic Parser",
+  "main": "src/parser.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "start": "tsc && node out/maysic.js"
+    "gen-parser": "syntax-cli -g src/ast/lexer.g -m LALR1 -o lib/Parser/yyparse.js",
+    "start": "tsc && node out/src/parser.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stormaaja/maysic.git"
   },
   "keywords": [
-    "compiler"
+    "compiler", "parser"
   ],
   "author": "Matti Ahinko",
   "license": "MIT",
@@ -36,6 +37,7 @@
     "prettier": "^1.18.2"
   },
   "dependencies": {
+    "syntax-cli": "^0.1.12",
     "typescript": "^3.6.4"
   }
 }
