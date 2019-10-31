@@ -20,5 +20,13 @@ module.exports = {
   ],
   rules: {
     "space-before-function-paren": ["error", {"named": "never"}]
-  }
+  },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': [2, { args: 'none' }]
+      }
+    }
+  ]
 }
