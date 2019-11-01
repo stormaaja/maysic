@@ -9,10 +9,14 @@
 /lex
 %%
 
+Begin:
+  | Program { $$ = { ast: $1 } }
+  ;
+
 Program:
   | Assign
   ;
 
 Assign:
-  | ID '=' NUMBER { $$ = { type: 'ASSIGN', left: $1, right: $3}}
+  | ID '=' NUMBER { $$ = { type: 'ASSIGN', left: $1, right: $3} }
   ;
