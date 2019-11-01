@@ -3,7 +3,7 @@ const fs = require('fs')
 
 export function parseFile(filePath: string) {
   const fileContent = fs.readFileSync(filePath, 'utf8')
-  console.log(Parser.parse(fileContent))
+  return Parser.parse(fileContent)
 }
 
 function main(args: string[]) {
