@@ -1,9 +1,9 @@
-export interface ASTNode {
-  left: ASTNode;
-  right: ASTNode;
+export interface RawASTNode {
+  left: RawASTNode | string;
+  right: RawASTNode | string;
   type: string;
 }
 
-export interface Program {
-  ast: ASTNode;
+export interface RawProgram {
+  ast: RawASTNode;
 }
