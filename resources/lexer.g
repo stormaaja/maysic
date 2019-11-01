@@ -3,7 +3,7 @@
 %%
 
 \s+                 /* skip whitespace */
-\d+                 return 'NUMBER'
+[1-9][0-9]*         return 'INTEGER'
 [a-z][a-zA-Z0-9_]*  return 'ID'
 
 /lex
@@ -18,5 +18,5 @@ Program:
   ;
 
 Assign:
-  | ID '=' NUMBER { $$ = { type: 'ASSIGN', left: $1, right: $3} }
+  | ID '=' INTEGER { $$ = { type: 'ASSIGN', left: $1, right: $3} }
   ;
