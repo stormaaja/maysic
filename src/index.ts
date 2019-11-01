@@ -1,4 +1,4 @@
-import { parseFile } from './parser/parser'
+import { parseFile } from './parser'
 
 function main(args: string[]) {
   if (args.length < 3) {

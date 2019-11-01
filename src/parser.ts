@@ -1,4 +1,4 @@
-import { Parser } from '../../lib/Parser'
+import { Parser } from '../lib/Parser'
 const fs = require('fs')
 
 export function parseFile(filePath: string) {
