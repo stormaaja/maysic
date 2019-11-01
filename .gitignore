@@ -64,8 +64,8 @@ typings/
 .vscode
 *.code-workspace
 
-# Build dir
-outlib/Parser/yyparse.js
+# Generated parser
+yyparse.js
 
 # Build files
 out
