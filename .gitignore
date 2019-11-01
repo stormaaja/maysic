@@ -65,4 +65,4 @@ typings/
 *.code-workspace
 
 # Build dir
-out
+outlib/Parser/yyparse.js
