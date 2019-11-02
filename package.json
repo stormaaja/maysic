@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc && cp -r lib out/",
-    "gen-parser": "syntax-cli -g resources/lexer.g -m LALR1 -o lib/Parser/yyparse.js && npm run build",
+    "gen-parser": "syntax-cli --loc -g resources/lexer.g -m LALR1 -o lib/Parser/yyparse.js && npm run build",
     "watch": "tsc -w",
     "start": "tsc && node out/src/index.js"
   },
