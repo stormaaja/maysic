@@ -37,7 +37,7 @@ function getLocation(start, end) {
 
 function createNode(type, left, right, startLocation, endLocation) {
   return {
-    type: 'ASSIGN',
+    type: type,
     left: left,
     right: right,
     location: getLocation(startLocation, endLocation)
