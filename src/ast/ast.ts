@@ -2,6 +2,7 @@ import { RawProgram, RawASTNode } from '../../lib/Parser/program'
 
 interface LineError {
   line: number;
+  column: number;
   error: string
 }
 
