@@ -4,10 +4,20 @@ interface Environment {
 
 }
 
+interface LineError {
+  line: number;
+  error: string
+}
+
+interface TypeEnvironment {
+  errors: LineError[]
+}
+
 interface ASTNode {
   left?: ASTNode;
   right?: ASTNode;
   eval: (env: Environment) => void;
+  typeCheck: (typeEnv: TypeEnvironment) => boolean;
 }
 
 interface ASTProgram {
@@ -17,6 +27,7 @@ interface ASTProgram {
 
 interface Value {
   eval: (env: Environment) => void;
+  typeCheck: (typeEnv: TypeEnvironment) => boolean;
   type: string;
 }
 
@@ -30,6 +41,10 @@ class ValueInteger implements Value {
 
   eval(env: Environment) {
 
+  }
+
+  typeCheck(typeEnv: TypeEnvironment) {
+    return true
   }
 }
 
@@ -48,6 +63,10 @@ class Assignment implements ASTNode {
 
   eval(env: Environment) {
 
+  }
+
+  typeCheck(typeEnv: TypeEnvironment) {
+    return true
   }
 }
 
