@@ -4,6 +4,7 @@
 
 \s+                 /* skip whitespace */
 [1-9][0-9]*         return 'INTEGER'
+\"[^"]+\"           return 'STRING'
 [a-z][a-zA-Z0-9_]*  return 'ID'
 
 /lex
@@ -54,5 +55,14 @@ Program:
   ;
 
 Assign:
-  | ID '=' INTEGER { $$ = createNode('ASSIGN', $1, $3, @1, @3) }
+  | ID '=' Expr { $$ = createNode('ASSIGN', $1, $3, @1, @3) }
+  ;
+
+Expr:
+  | Const
+  ;
+
+Const:
+  | INTEGER { $$ = createNode('INTEGER', $1, null, @1, null) }
+  | STRING { $$ = createNode('STRING', $1, null, @1, null) }
   ;
