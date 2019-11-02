@@ -7,7 +7,8 @@ interface LineError {
 }
 
 interface Environment {
-  errors: LineError[]
+  errors: LineError[];
+  constants: {[key: string]: Value}
 }
 
 interface TypeEnvironment {
@@ -49,17 +50,12 @@ class ValueInteger implements Value {
   }
 }
 
-class Assignment implements ASTNode {
-  left?: ASTNode | undefined
-  right?: ASTNode | undefined
-  id: string
-  value: Value
+class ValueString implements Value {
+  value: string
   type: string
-
-  constructor(node: RawASTNode) {
-    this.type = node.type
-    this.id = node.left.toString()
-    this.value = new ValueInteger(parseInt(node.right.toString()))
+  constructor(value: string) {
+    this.type = 'STRING'
+    this.value = value
   }
 
   eval(env: Environment) {
@@ -67,6 +63,39 @@ class Assignment implements ASTNode {
   }
 
   typeCheck(typeEnv: TypeEnvironment) {
+    return true
+  }
+}
+
+function getValue(node: RawASTNode) {
+  switch (node.type) {
+    case 'INTEGER':
+      return new ValueInteger(parseInt(node.left.toString()))
+    case 'STRING':
+      return new ValueString(node.left.toString())
+    default:
+      throw new Error(`Unknown value type: ${node.type}`)
+  }
+}
+
+class Assignment implements ASTNode {
+  left?: ASTNode | undefined
+  right?: ASTNode | undefined
+  id: string
+  type: string
+  value: Value
+
+  constructor(node: RawASTNode) {
+    this.type = node.type
+    this.id = node.left.toString()
+    this.value = getValue(node.right) // Change to expression
+  }
+
+  eval(env: Environment) {
+    env.constants[this.id] = this.value // Eval value expression
+  }
+
+  typeCheck(_: TypeEnvironment) {
     return true
   }
 }
@@ -82,6 +111,6 @@ function createNode(node: RawASTNode) {
 export function convertToAST(program: RawProgram): ASTProgram {
   return {
     ast: createNode(program.ast),
-    env: { errors: [] }
+    env: { constants: {}, errors: [] }
   }
 }
