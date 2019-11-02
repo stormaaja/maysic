@@ -1,5 +1,5 @@
 import { parseFile } from './parser'
-import { convertToAST } from './ast'
+import { convertToAST } from './ast/ast'
 
 function main(args: string[]) {
   if (args.length < 3) {
