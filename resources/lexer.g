@@ -22,14 +22,16 @@ function getLocation(start, end) {
       startColumn: start.startColumn,
       endColumn: start.endColumn
     },
-    end: {
-      startOffset: end.startOffset,
-      endOffset: end.endOffset,
-      startLine: end.startLine,
-      endLine: end.endLine,
-      startColumn: end.startColumn,
-      endColumn: end.endColumn
-    }
+    end: end
+      ? {
+        startOffset: end.startOffset,
+        endOffset: end.endOffset,
+        startLine: end.startLine,
+        endLine: end.endLine,
+        startColumn: end.startColumn,
+        endColumn: end.endColumn
+      }
+      : null
   };
 }
 
