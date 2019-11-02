@@ -1,6 +1,6 @@
 export interface RawASTNode {
-  left: RawASTNode | string;
-  right: RawASTNode | string;
+  left: RawASTNode;
+  right: RawASTNode;
   type: string;
 }
 
