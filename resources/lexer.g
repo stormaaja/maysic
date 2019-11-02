@@ -32,6 +32,15 @@ function getLocation(start, end) {
   };
 }
 
+function createNode(type, left, right, startLocation, endLocation) {
+  return {
+    type: 'ASSIGN',
+    left: left,
+    right: right,
+    location: getLocation(startLocation, endLocation)
+  }
+}
+
 %}
 
 %%
@@ -45,5 +54,5 @@ Program:
   ;
 
 Assign:
-  | ID '=' INTEGER { $$ = { type: 'ASSIGN', left: $1, right: $3, location: getLocation(@1, @3) } }
+  | ID '=' INTEGER { $$ = createNode('ASSIGN', $1, $3, @1, @3) }
   ;
