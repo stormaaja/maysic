@@ -11,4 +11,4 @@ Parser is in `parser/` folder.
 
 ### Parsing
 
-    node out/src/parser.js path/to/file.msic
+    node out/src/index.js path/to/file.msic
