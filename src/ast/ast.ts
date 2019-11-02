@@ -1,12 +1,12 @@
-import { RawProgram, RawASTNode } from '../lib/Parser/program'
-
-interface Environment {
-
-}
+import { RawProgram, RawASTNode } from '../../lib/Parser/program'
 
 interface LineError {
   line: number;
   error: string
+}
+
+interface Environment {
+  errors: LineError[]
 }
 
 interface TypeEnvironment {
@@ -81,6 +81,6 @@ function createNode(node: RawASTNode) {
 export function convertToAST(program: RawProgram): ASTProgram {
   return {
     ast: createNode(program.ast),
-    env: {}
+    env: { errors: [] }
   }
 }
