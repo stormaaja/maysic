@@ -49,23 +49,45 @@ function createNode(type, children, startLocation, endLocation) {
 
 %%
 
-Begin:
-  | Program { $$ = { ast: $1 } }
+Begin
+  : Blocks { $$ = createNode('block', $1, @1) }
   ;
 
-Program:
-  | Assign
+Blocks
+  : /* empty */ { $$ = [] }
+  | Blocks Block { $$ = $1.concat($2) }
   ;
 
-Assign:
-  | ID '=' Expr { $$ = createNode('ASSIGN', $1, $3, @1, @3) }
+Block
+  : Assign
+  | FnCall
   ;
 
-Expr:
-  | Const
+Assign
+  : ID '=' Expr { $$ = createNode('assign', [$1, $3], @1, @3) }
   ;
 
-Const:
-  | INTEGER { $$ = createNode('INTEGER', $1, null, @1, null) }
-  | STRING { $$ = createNode('STRING', $1, null, @1, null) }
+Expr
+  : Const
+  | ID { $$ = createNode('symbol', [$1], @1)}
+  ;
+
+Const
+  : INTEGER { $$ = createNode('constInteger', [$1], @1) }
+  | STRING { $$ = createNode('constString', [$1], @1) }
+  ;
+
+FnCall
+  : ID '(' ParamList ')' { $$ = createNode('fnCall', [$1, $3], @1, @3) }
+  ;
+
+ParamList
+  : /* Empty */ { $$ = [] }
+  | Param { $$ = [$1]}
+  | ParamList ',' Param { $$ = $1.concat($3) }
+  ;
+
+Param
+  : Expr
+  | FnCall
   ;
