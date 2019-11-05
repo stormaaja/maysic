@@ -37,11 +37,10 @@ function getLocation(start, end) {
   };
 }
 
-function createNode(type, left, right, startLocation, endLocation) {
+function createNode(type, children, startLocation, endLocation) {
   return {
     type: type,
-    left: left,
-    right: right,
+    children: children,
     location: getLocation(startLocation, endLocation)
   }
 }
