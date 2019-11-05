@@ -69,25 +69,25 @@ class ValueString implements Value {
 function getValue(node: RawASTNode) {
   switch (node.type) {
     case 'INTEGER':
-      return new ValueInteger(parseInt(node.left.toString()))
+      return new ValueInteger(parseInt(node.children[0].toString()))
     case 'STRING':
-      return new ValueString(node.left.toString())
+      return new ValueString(node.children[0].toString())
     default:
       throw new Error(`Unknown value type: ${node.type}`)
   }
 }
 
 class Assignment implements ASTNode {
-  left?: ASTNode | undefined
-  right?: ASTNode | undefined
+  children: ASTNode[]
   id: string
   type: string
-  value: Value
+  value: ASTNode
 
   constructor(node: RawASTNode) {
     this.type = node.type
-    this.id = node.left.toString()
-    this.value = getValue(node.right) // Change to expression
+    this.children = []
+    this.id = node.children[0].toString()
+    this.value = createNode(node.children[1])
   }
 
   eval(env: Environment) {
