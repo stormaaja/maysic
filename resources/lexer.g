@@ -50,6 +50,10 @@ function createNode(type, children, startLocation, endLocation) {
 %%
 
 Begin
+  : Program { $$ = { ast: $1 } }
+  ;
+
+Program
   : Blocks { $$ = createNode('block', $1, @1) }
   ;
 
