@@ -14,14 +14,16 @@
 function getLocation(start, end) {
   // Same as default result location.
   return {
-    start: {
-      startOffset: start.startOffset,
-      endOffset: start.endOffset,
-      startLine: start.startLine,
-      endLine: start.endLine,
-      startColumn: start.startColumn,
-      endColumn: start.endColumn
-    },
+    start: start
+      ? {
+          startOffset: start.startOffset,
+          endOffset: start.endOffset,
+          startLine: start.startLine,
+          endLine: start.endLine,
+          startColumn: start.startColumn,
+          endColumn: start.endColumn
+        }
+      : null,
     end: end
       ? {
         startOffset: end.startOffset,
