@@ -16,8 +16,7 @@ interface TypeEnvironment {
 }
 
 interface ASTNode {
-  left?: ASTNode;
-  right?: ASTNode;
+  children: ASTNode[]
   eval: (env: Environment) => void;
   typeCheck: (typeEnv: TypeEnvironment) => boolean;
 }
