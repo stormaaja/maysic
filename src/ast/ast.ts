@@ -102,9 +102,9 @@ class Assignment implements ASTNode {
 
 function createNode(node: RawASTNode) {
   switch (node.type) {
-    case 'ASSIGN': {
+    case 'ASSIGN':
       return new Assignment(node)
-    }
+    default: throw new Error(`Unknown type: ${node.type}`)
   }
 }
 
