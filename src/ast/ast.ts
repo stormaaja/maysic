@@ -97,7 +97,7 @@ class Assignment implements ASTNode {
   }
 
   eval(env: Environment) {
-    env.constants[this.id] = this.value // Eval value expression
+    env.constants[this.id] = this.value
   }
 
   typeCheck(_: TypeEnvironment) {
