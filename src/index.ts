@@ -7,9 +7,9 @@ function main(args: string[]) {
   } else {
     try {
       const rawProgram = parseFile(args[2])
-      console.log(JSON.stringify(rawProgram, null, 1))
+      console.debug(JSON.stringify(rawProgram, null, 1))
       const program = convertToAST(rawProgram)
-      console.log(program)
+      console.debug(program)
     } catch (e) {
       console.error(e.msg)
       console.debug(e.stack)
