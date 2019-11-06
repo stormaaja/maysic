@@ -135,7 +135,9 @@ function createNode(node: RawASTNode): ASTNode {
       return new Assignment(node)
     case 'fnCall':
       return new FnCall(node)
-    default: throw new Error(`Unknown type: ${node.type}`)
+    default:
+      console.debug(JSON.stringify(node, null, 1))
+      throw new Error(`Unknown type: ${node.type}`)
   }
 }
 
