@@ -104,6 +104,25 @@ class Assignment extends TypedNode implements ASTNode {
   }
 }
 
+class FnCall extends TypedNode implements ASTNode {
+  id: string
+  params: ASTNode[]
+
+  constructor(node: RawASTNode) {
+    super(node)
+    this.id = node.children[0].toString()
+    this.params = node.children[1].map(createNode)
+  }
+
+  eval(env: Environment) {
+
+  }
+
+  typeCheck(_: TypeEnvironment) {
+    return true
+  }
+}
+
 function createNode(node: RawASTNode): ASTNode {
   switch (node.type) {
     case 'block':
@@ -114,6 +133,8 @@ function createNode(node: RawASTNode): ASTNode {
       return new ConstInteger(node)
     case 'assign':
       return new Assignment(node)
+    case 'fnCall':
+      return new FnCall(node)
     default: throw new Error(`Unknown type: ${node.type}`)
   }
 }
