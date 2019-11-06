@@ -8,7 +8,7 @@ interface LineError {
 
 interface Environment {
   errors: LineError[];
-  constants: {[key: string]: Value}
+  constants: {[key: string]: ASTNode}
 }
 
 interface TypeEnvironment {
@@ -16,7 +16,8 @@ interface TypeEnvironment {
 }
 
 interface ASTNode {
-  children: ASTNode[]
+  children: ASTNode[];
+  type: string;
   eval: (env: Environment) => void;
   typeCheck: (typeEnv: TypeEnvironment) => boolean;
 }
@@ -26,18 +27,14 @@ interface ASTProgram {
   env: Environment;
 }
 
-interface Value {
-  eval: (env: Environment) => void;
-  typeCheck: (typeEnv: TypeEnvironment) => boolean;
-  type: string;
-}
-
-class ValueInteger implements Value {
+class ConstInteger implements ASTNode {
+  children: ASTNode[]
   value: number
   type: string
-  constructor(value: number) {
-    this.type = 'INTEGER'
-    this.value = value
+  constructor(node: RawASTNode) {
+    this.children = []
+    this.type = 'constInteger'
+    this.value = parseInt(node.children[0].toString())
   }
 
   eval(env: Environment) {
@@ -49,12 +46,14 @@ class ValueInteger implements Value {
   }
 }
 
-class ValueString implements Value {
+class ConstString implements ASTNode {
+  children: ASTNode[]
   value: string
   type: string
-  constructor(value: string) {
-    this.type = 'STRING'
-    this.value = value
+  constructor(node: RawASTNode) {
+    this.children = []
+    this.type = 'constString'
+    this.value = node.children[0].toString()
   }
 
   eval(env: Environment) {
@@ -66,14 +65,21 @@ class ValueString implements Value {
   }
 }
 
-function getValue(node: RawASTNode) {
-  switch (node.type) {
-    case 'INTEGER':
-      return new ValueInteger(parseInt(node.children[0].toString()))
-    case 'STRING':
-      return new ValueString(node.children[0].toString())
-    default:
-      throw new Error(`Unknown value type: ${node.type}`)
+class Block implements ASTNode {
+  children: ASTNode[]
+  type: string
+
+  constructor(node: RawASTNode) {
+    this.type = node.type
+    this.children = node.children.map(createNode)
+  }
+
+  eval(env: Environment) {
+
+  }
+
+  typeCheck(_: TypeEnvironment) {
+    return true
   }
 }
 
@@ -99,9 +105,15 @@ class Assignment implements ASTNode {
   }
 }
 
-function createNode(node: RawASTNode) {
+function createNode(node: RawASTNode): ASTNode {
   switch (node.type) {
-    case 'ASSIGN':
+    case 'block':
+      return new Block(node)
+    case 'constString':
+      return new ConstString(node)
+    case 'constInteger':
+      return new ConstInteger(node)
+    case 'assign':
       return new Assignment(node)
     default: throw new Error(`Unknown type: ${node.type}`)
   }
