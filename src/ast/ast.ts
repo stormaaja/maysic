@@ -17,9 +17,16 @@ interface TypeEnvironment {
 
 interface ASTNode {
   children: ASTNode[];
-  type: string;
   eval: (env: Environment) => void;
   typeCheck: (typeEnv: TypeEnvironment) => boolean;
+}
+
+class TypedNode {
+  type: string;
+  children: ASTNode[] = []
+  constructor(node: RawASTNode) {
+    this.type = node.type
+  }
 }
 
 interface ASTProgram {
@@ -27,13 +34,10 @@ interface ASTProgram {
   env: Environment;
 }
 
-class ConstInteger implements ASTNode {
-  children: ASTNode[]
+class ConstInteger extends TypedNode implements ASTNode {
   value: number
-  type: string
   constructor(node: RawASTNode) {
-    this.children = []
-    this.type = 'constInteger'
+    super(node)
     this.value = parseInt(node.children[0].toString())
   }
 
@@ -46,12 +50,10 @@ class ConstInteger implements ASTNode {
   }
 }
 
-class ConstString implements ASTNode {
-  children: ASTNode[]
+class ConstString extends TypedNode implements ASTNode {
   value: string
-  type: string
   constructor(node: RawASTNode) {
-    this.children = []
+    super(node)
     this.type = 'constString'
     this.value = node.children[0].toString()
   }
@@ -65,12 +67,11 @@ class ConstString implements ASTNode {
   }
 }
 
-class Block implements ASTNode {
+class Block extends TypedNode implements ASTNode {
   children: ASTNode[]
-  type: string
 
   constructor(node: RawASTNode) {
-    this.type = node.type
+    super(node)
     this.children = node.children.map(createNode)
   }
 
@@ -83,14 +84,12 @@ class Block implements ASTNode {
   }
 }
 
-class Assignment implements ASTNode {
-  children: ASTNode[]
+class Assignment extends TypedNode implements ASTNode {
   id: string
-  type: string
   value: ASTNode
 
   constructor(node: RawASTNode) {
-    this.type = node.type
+    super(node)
     this.children = []
     this.id = node.children[0].toString()
     this.value = createNode(node.children[1])
