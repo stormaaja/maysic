@@ -111,7 +111,7 @@ class FnCall extends TypedNode implements ASTNode {
   constructor(node: RawASTNode) {
     super(node)
     this.id = node.children[0].toString()
-    this.params = node.children[1].map(createNode)
+    this.params = node.children[1].children.map(createNode)
   }
 
   eval(env: Environment) {
