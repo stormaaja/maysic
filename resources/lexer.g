@@ -82,7 +82,10 @@ Const
   ;
 
 FnCall
-  : ID '(' ParamList ')' { $$ = createNode('fnCall', [$1, $3], @1, @3) }
+  : ID '(' ParamList ')' {
+      $$ = createNode(
+        'fnCall', [$1, createNode('paramList', $3, @1, @3)], @1, @3)
+    }
   ;
 
 ParamList
