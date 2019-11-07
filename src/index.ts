@@ -10,6 +10,9 @@ function main(args: string[]) {
       console.debug(JSON.stringify(rawProgram, null, 1))
       const program = convertToAST(rawProgram)
       console.debug(program)
+      if (program.env.errors.length > 0) {
+        console.error(JSON.stringify(program.env.errors))
+      }
     } catch (e) {
       console.error(e.msg)
       console.debug(e.stack)
