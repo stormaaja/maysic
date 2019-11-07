@@ -1,8 +1,7 @@
-import { RawProgram, RawASTNode } from '../../lib/Parser/program'
+import { RawProgram, RawASTNode, ASTLocation } from '../../lib/Parser/program'
 
 interface LineError {
-  line: number;
-  column: number;
+  location: {start: ASTLocation, end: ASTLocation}
   error: string
 }
 
@@ -12,7 +11,8 @@ interface Environment {
 }
 
 interface ASTEnvironment {
-  errors: LineError[]
+  errors: LineError[];
+  symbols: {[key: string]: ASTNode};
 }
 
 interface ASTNode {
@@ -24,8 +24,10 @@ interface ASTNode {
 class TypedNode {
   type: string;
   children: ASTNode[] = []
+  location: { start: ASTLocation, end: ASTLocation }
   constructor(node: RawASTNode) {
     this.type = node.type
+    this.location = node.location
   }
 }
 
@@ -118,7 +120,13 @@ class FnCall extends TypedNode implements ASTNode {
 
   }
 
-  check(_: ASTEnvironment) {
+  check(env: ASTEnvironment) {
+    if (!env.symbols[this.id]) {
+      env.errors.push({
+        location: this.location,
+        error: 'symbolNotFound'
+      })
+    }
     return true
   }
 }
