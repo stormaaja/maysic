@@ -123,6 +123,24 @@ class FnCall extends TypedNode implements ASTNode {
   }
 }
 
+class SymbolNode extends TypedNode implements ASTNode {
+  id: string
+  errors: LineError[] = []
+
+  constructor(node: RawASTNode) {
+    super(node)
+    this.id = node.children[0].toString()
+  }
+
+  eval(env: Environment) {
+
+  }
+
+  typeCheck(_: TypeEnvironment) {
+    return true
+  }
+}
+
 function createNode(node: RawASTNode): ASTNode {
   switch (node.type) {
     case 'block':
@@ -135,6 +153,8 @@ function createNode(node: RawASTNode): ASTNode {
       return new Assignment(node)
     case 'fnCall':
       return new FnCall(node)
+    case 'symbol':
+      return new SymbolNode(node)
     default:
       console.debug(JSON.stringify(node, null, 1))
       throw new Error(`Unknown type: ${node.type}`)
