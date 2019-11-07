@@ -33,7 +33,7 @@ class TypedNode {
 
 interface ASTProgram {
   ast?: ASTNode;
-  env: Environment;
+  checkEnv: ASTEnvironment;
 }
 
 class ConstInteger extends TypedNode implements ASTNode {
@@ -81,7 +81,8 @@ class Block extends TypedNode implements ASTNode {
 
   }
 
-  check(_: ASTEnvironment) {
+  check(env: ASTEnvironment) {
+    this.children.forEach(n => n.check(env))
     return true
   }
 }
@@ -101,7 +102,9 @@ class Assignment extends TypedNode implements ASTNode {
     env.constants[this.id] = this.value
   }
 
-  check(_: ASTEnvironment) {
+  check(env: ASTEnvironment) {
+    // Check value type
+    this.children.forEach(n => n.check(env))
     return true
   }
 }
@@ -144,7 +147,8 @@ class SymbolNode extends TypedNode implements ASTNode {
 
   }
 
-  check(_: ASTEnvironment) {
+  check(env: ASTEnvironment) {
+    env.symbols[this.id] = this
     return true
   }
 }
@@ -170,8 +174,10 @@ function createNode(node: RawASTNode): ASTNode {
 }
 
 export function convertToAST(program: RawProgram): ASTProgram {
+  const ast = createNode(program.ast)
+  const checkEnv = { symbols: {}, errors: [] }
+  ast.check(checkEnv)
   return {
-    ast: createNode(program.ast),
-    env: { constants: {}, errors: [] }
+    ast, checkEnv
   }
 }
