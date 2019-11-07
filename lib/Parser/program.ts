@@ -1,4 +1,4 @@
-interface Location {
+export interface ASTLocation {
   startOffset: number;
   endOffset: number;
   startLine: number;
@@ -10,7 +10,7 @@ interface Location {
 export interface RawASTNode {
   children: RawASTNode[];
   type: string;
-  location: { start: Location; end: Location }
+  location: { start: ASTLocation; end: ASTLocation }
 }
 
 export interface RawProgram {
