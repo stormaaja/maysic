@@ -11,14 +11,14 @@ interface Environment {
   constants: {[key: string]: ASTNode}
 }
 
-interface TypeEnvironment {
+interface ASTEnvironment {
   errors: LineError[]
 }
 
 interface ASTNode {
   children: ASTNode[];
   eval: (env: Environment) => void;
-  typeCheck: (typeEnv: TypeEnvironment) => boolean;
+  typeCheck: (typeEnv: ASTEnvironment) => boolean;
 }
 
 class TypedNode {
@@ -45,7 +45,7 @@ class ConstInteger extends TypedNode implements ASTNode {
 
   }
 
-  typeCheck(typeEnv: TypeEnvironment) {
+  typeCheck(typeEnv: ASTEnvironment) {
     return true
   }
 }
@@ -62,7 +62,7 @@ class ConstString extends TypedNode implements ASTNode {
 
   }
 
-  typeCheck(typeEnv: TypeEnvironment) {
+  typeCheck(typeEnv: ASTEnvironment) {
     return true
   }
 }
@@ -79,7 +79,7 @@ class Block extends TypedNode implements ASTNode {
 
   }
 
-  typeCheck(_: TypeEnvironment) {
+  typeCheck(_: ASTEnvironment) {
     return true
   }
 }
@@ -99,7 +99,7 @@ class Assignment extends TypedNode implements ASTNode {
     env.constants[this.id] = this.value
   }
 
-  typeCheck(_: TypeEnvironment) {
+  typeCheck(_: ASTEnvironment) {
     return true
   }
 }
@@ -118,7 +118,7 @@ class FnCall extends TypedNode implements ASTNode {
 
   }
 
-  typeCheck(_: TypeEnvironment) {
+  typeCheck(_: ASTEnvironment) {
     return true
   }
 }
@@ -136,7 +136,7 @@ class SymbolNode extends TypedNode implements ASTNode {
 
   }
 
-  typeCheck(_: TypeEnvironment) {
+  typeCheck(_: ASTEnvironment) {
     return true
   }
 }
