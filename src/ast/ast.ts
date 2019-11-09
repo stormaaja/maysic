@@ -215,9 +215,27 @@ function createNode(node: RawASTNode): ASTNode {
   }
 }
 
+class SystemFunctionNode extends FunctionNode {
+  handler: (params: ASTNode[]) => void
+  constructor(handler: (params: ASTNode[]) => void, args: TypedParamNode[]) {
+    super({
+      type: 'function',
+      children: [
+        { children: [], location: {}, type: 'typedParamList' }
+      ],
+      location: {}
+    })
+    this.handler = handler
+  }
+
+  eval(env: Environment) {
+    this.handler([])
+  }
+}
+
 export function convertToAST(program: RawProgram): ASTProgram {
   const ast = createNode(program.ast)
-  const checkEnv = { symbols: {}, errors: [] }
+  const checkEnv: ASTEnvironment = { symbols: {}, errors: [] }
   ast.check(checkEnv)
   return {
     ast, checkEnv
