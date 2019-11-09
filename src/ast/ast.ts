@@ -15,20 +15,19 @@ interface ASTEnvironment {
   symbols: {[key: string]: ASTNode};
 }
 
-interface ASTNode {
-  children: ASTNode[];
-  eval: (env: Environment) => void;
-  check: (env: ASTEnvironment) => boolean;
-}
-
-class TypedNode {
+class ASTNode {
+  children: ASTNode[] = [];
   type: string;
-  children: ASTNode[] = []
   location: { start: ASTLocation, end: ASTLocation }
+
   constructor(node: RawASTNode) {
     this.type = node.type
     this.location = node.location
   }
+
+  eval(env: Environment) {}
+  check(env: ASTEnvironment) { return true }
+  getType() { return 'void' }
 }
 
 interface ASTProgram {
@@ -36,7 +35,7 @@ interface ASTProgram {
   checkEnv: ASTEnvironment;
 }
 
-class ConstInteger extends TypedNode implements ASTNode {
+class ConstInteger extends ASTNode {
   value: number
   constructor(node: RawASTNode) {
     super(node)
@@ -52,7 +51,7 @@ class ConstInteger extends TypedNode implements ASTNode {
   }
 }
 
-class ConstString extends TypedNode implements ASTNode {
+class ConstString extends ASTNode {
   value: string
   constructor(node: RawASTNode) {
     super(node)
@@ -69,7 +68,7 @@ class ConstString extends TypedNode implements ASTNode {
   }
 }
 
-class Block extends TypedNode implements ASTNode {
+class Block extends ASTNode {
   children: ASTNode[]
 
   constructor(node: RawASTNode) {
@@ -87,7 +86,7 @@ class Block extends TypedNode implements ASTNode {
   }
 }
 
-class Assignment extends TypedNode implements ASTNode {
+class Assignment extends ASTNode {
   id: string
   value: ASTNode
 
@@ -109,7 +108,7 @@ class Assignment extends TypedNode implements ASTNode {
   }
 }
 
-class FnCall extends TypedNode implements ASTNode {
+class FnCall extends ASTNode {
   id: string
   params: ASTNode[]
 
@@ -134,7 +133,7 @@ class FnCall extends TypedNode implements ASTNode {
   }
 }
 
-class SymbolNode extends TypedNode implements ASTNode {
+class SymbolNode extends ASTNode {
   id: string
   errors: LineError[] = []
 
