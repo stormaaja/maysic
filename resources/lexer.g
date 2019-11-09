@@ -82,7 +82,7 @@ Expr
 Function
   : '(' TypedParamList ')' ':' '{' Blocks '}' {
       $$ = createNode(
-        'function', [createNode('typedParamList', $2, @2)], @1, @7)
+        'function', [createNode('typedParamList', $2, @2)].concat($6), @1, @7)
     }
   ;
 
