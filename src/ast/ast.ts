@@ -1,8 +1,8 @@
 import { RawProgram, RawASTNode, ASTLocation } from '../../lib/Parser/program'
 
 interface LineError {
-  location: {start: ASTLocation, end: ASTLocation}
-  error: string
+  location: {start?: ASTLocation, end?: ASTLocation};
+  error: string;
 }
 
 interface Environment {
@@ -19,7 +19,7 @@ class ASTNode {
   children: ASTNode[] = [];
   type: string;
   valueType: string = 'void'
-  location: { start: ASTLocation, end: ASTLocation }
+  location: { start?: ASTLocation, end?: ASTLocation }
 
   constructor(node: RawASTNode) {
     this.type = node.type
