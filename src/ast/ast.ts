@@ -18,6 +18,7 @@ interface ASTEnvironment {
 class ASTNode {
   children: ASTNode[] = [];
   type: string;
+  valueType: string = 'void'
   location: { start: ASTLocation, end: ASTLocation }
 
   constructor(node: RawASTNode) {
@@ -53,9 +54,9 @@ class ConstInteger extends ASTNode {
 
 class ConstString extends ASTNode {
   value: string
+  valueType: string = 'string'
   constructor(node: RawASTNode) {
     super(node)
-    this.type = 'constString'
     this.value = node.children[0].toString()
   }
 
@@ -162,7 +163,7 @@ class FunctionNode extends ASTNode {
     this.params = node.children[0].children.map(createNode)
     this.children = node.children.slice(1).map(createNode)
     const lastChild = this.children[this.children.length - 1]
-    this.returnType = lastChild ? lastChild.getType() : 'void'
+    this.returnType = lastChild ? lastChild.valueType : 'void'
   }
 
   eval(env: Environment) {
