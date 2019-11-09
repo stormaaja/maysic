@@ -3,6 +3,7 @@ import { RawProgram, RawASTNode, ASTLocation } from '../../lib/Parser/program'
 interface LineError {
   location: {start?: ASTLocation, end?: ASTLocation};
   error: string;
+  node: ASTNode;
 }
 
 interface Environment {
