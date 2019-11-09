@@ -152,6 +152,25 @@ class SymbolNode extends ASTNode {
   }
 }
 
+class FunctionNode extends ASTNode {
+  errors: LineError[] = []
+  returnType: string
+
+  constructor(node: RawASTNode) {
+    super(node)
+    const lastChild = this.children[this.children.length - 1]
+    this.returnType = lastChild ? lastChild.getType() : 'void'
+  }
+
+  eval(env: Environment) {
+
+  }
+
+  check(env: ASTEnvironment) {
+    return true
+  }
+}
+
 function createNode(node: RawASTNode): ASTNode {
   switch (node.type) {
     case 'block':
@@ -166,6 +185,8 @@ function createNode(node: RawASTNode): ASTNode {
       return new FnCall(node)
     case 'symbol':
       return new SymbolNode(node)
+    case 'function':
+      return new FunctionNode(node)
     default:
       console.debug(JSON.stringify(node, null, 1))
       throw new Error(`Unknown type: ${node.type}`)
