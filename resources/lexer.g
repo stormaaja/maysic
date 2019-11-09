@@ -3,6 +3,8 @@
 %%
 
 \s+                 /* skip whitespace */
+'string'            return 'STRINGTYPE'
+'integer'           return 'INTEGERTYPE'
 [1-9][0-9]*         return 'INTEGER'
 \"[^"]+\"           return 'STRING'
 [a-z][a-zA-Z0-9_]*  return 'ID'
@@ -74,6 +76,29 @@ Assign
 Expr
   : Const
   | ID { $$ = createNode('symbol', [$1], @1)}
+  | Function
+  ;
+
+Function
+  : '(' TypedParamList ')' ':' '{' Blocks '}' {
+      $$ = createNode(
+        'function', [createNode('typedParamList', $2, @2)], @1, @7)
+    }
+  ;
+
+TypedParamList
+  : /* Empty */ { $$ = [] }
+  | TypedParam { $$ = [$1] }
+  | TypedParamList ',' TypedParam { $$ = $1.concat($3) }
+  ;
+
+TypedParam
+  : SymbolType ID { $$ = createNode('typedParam', [$1, $2], @1, @2) }
+  ;
+
+SymbolType
+  : STRINGTYPE
+  | INTEGERTYPE
   ;
 
 Const
