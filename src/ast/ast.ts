@@ -28,7 +28,6 @@ class ASTNode {
 
   eval(env: Environment) {}
   check(env: ASTEnvironment) { return true }
-  getType() { return 'void' }
 }
 
 interface ASTProgram {
@@ -136,7 +135,6 @@ class FnCall extends ASTNode {
 
 class SymbolNode extends ASTNode {
   id: string
-  errors: LineError[] = []
 
   constructor(node: RawASTNode) {
     super(node)
@@ -154,7 +152,6 @@ class SymbolNode extends ASTNode {
 }
 
 class FunctionNode extends ASTNode {
-  errors: LineError[] = []
   returnType: string
   params: ASTNode[]
 
