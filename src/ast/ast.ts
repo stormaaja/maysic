@@ -12,7 +12,7 @@ interface Environment {
 
 interface ASTEnvironment {
   errors: LineError[];
-  symbols: {[key: string]: ASTNode};
+  symbols: {[key: string]: ASTNode[]};
 }
 
 class ASTNode {
@@ -146,7 +146,11 @@ class SymbolNode extends ASTNode {
   }
 
   check(env: ASTEnvironment) {
-    env.symbols[this.id] = this
+    if (env.symbols[this.id]) {
+      env.symbols[this.id].push(this)
+    } else {
+      env.symbols[this.id] = [this]
+    }
     return true
   }
 }
