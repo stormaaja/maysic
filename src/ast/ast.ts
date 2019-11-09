@@ -171,6 +171,21 @@ class FunctionNode extends ASTNode {
   }
 }
 
+class TypedParamNode extends ASTNode {
+  constructor(node: RawASTNode) {
+    super(node)
+    this.valueType = node.children[0].toString()
+  }
+
+  eval(env: Environment) {
+
+  }
+
+  check(env: ASTEnvironment) {
+    return true
+  }
+}
+
 function createNode(node: RawASTNode): ASTNode {
   switch (node.type) {
     case 'block':
@@ -187,6 +202,8 @@ function createNode(node: RawASTNode): ASTNode {
       return new SymbolNode(node)
     case 'function':
       return new FunctionNode(node)
+    case 'typedParam':
+      return new TypedParamNode(node)
     default:
       console.debug(JSON.stringify(node, null, 1))
       throw new Error(`Unknown type: ${node.type}`)
