@@ -155,15 +155,17 @@ class SymbolNode extends ASTNode {
 class FunctionNode extends ASTNode {
   errors: LineError[] = []
   returnType: string
+  params: ASTNode[]
 
   constructor(node: RawASTNode) {
     super(node)
+    this.params = node.children[0].children.map(createNode)
+    this.children = node.children.slice(1).map(createNode)
     const lastChild = this.children[this.children.length - 1]
     this.returnType = lastChild ? lastChild.getType() : 'void'
   }
 
   eval(env: Environment) {
-
   }
 
   check(env: ASTEnvironment) {
