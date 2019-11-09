@@ -7,9 +7,13 @@ function main(args: string[]) {
   } else {
     try {
       const rawProgram = parseFile(args[2])
-      console.debug(JSON.stringify(rawProgram, null, 1))
+      if (args.indexOf('--debug') > -1 || args.indexOf('--print-raw') > -1) {
+        console.debug(JSON.stringify(rawProgram, null, 1))
+      }
       const program = convertToAST(rawProgram)
-      console.debug(program)
+      if (args.indexOf('--debug') > -1 || args.indexOf('--print-ast') > -1) {
+        console.debug(program)
+      }
       if (program.checkEnv.errors.length > 0) {
         console.error(JSON.stringify(program.checkEnv.errors, null, 1))
       }
