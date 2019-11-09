@@ -16,6 +16,12 @@ function main(args: string[]) {
       }
       if (program.checkEnv.errors.length > 0) {
         console.error(JSON.stringify(program.checkEnv.errors, null, 1))
+      } else {
+        if (args.indexOf('--eval') > -1) {
+          program.ast.eval(
+            { errors: [], constants: {} }
+          )
+        }
       }
     } catch (e) {
       console.error(e.msg)
