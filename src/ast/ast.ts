@@ -174,11 +174,6 @@ class SymbolNode extends ASTNode {
   }
 
   check(env: ASTEnvironment) {
-    if (env.symbols[this.id]) {
-      env.symbols[this.id].push(this)
-    } else {
-      env.symbols[this.id] = [this]
-    }
     return true
   }
 }
