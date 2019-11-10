@@ -200,11 +200,19 @@ class FunctionNode extends ASTNode {
 }
 
 class TypedParamNode extends ASTNode {
+  symbol: string = ''
+
   constructor(node: RawASTNode) {
     super(node)
-    this.valueType = node.children[0].toString()
+    if (node.children.length > 0) {
+      this.setNode(node.children[0].toString(), node.children[1].toString())
+    }
   }
 
+  setNode(valueType: string, symbol: string) {
+    this.valueType = valueType
+    this.symbol = symbol
+  }
 
   eval(env: ASTEnvironment) {
     return null
