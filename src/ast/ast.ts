@@ -117,6 +117,15 @@ class Assignment extends ASTNode {
   check(env: ASTEnvironment) {
     // TODO: Check value type
     this.children.forEach(n => n.check(env))
+    if (env.symbols[this.id]) {
+      env.errors.push({
+        location: this.location,
+        error: 'symbolAlreadyExists', // TODO: add support for function overload
+        node: this
+      })
+    } else {
+      env.symbols[this.id] = this.value
+    }
     return true
   }
 }
