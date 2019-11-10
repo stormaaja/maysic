@@ -190,7 +190,8 @@ class FunctionNode extends ASTNode {
     this.returnType = lastChild ? lastChild.valueType : 'void'
   }
 
-  eval(env: ASTEnvironment) {
+  eval(env: ASTEnvironment): ValueNode | null{
+    return null
   }
 
   check(env: ASTEnvironment) {
@@ -204,8 +205,9 @@ class TypedParamNode extends ASTNode {
     this.valueType = node.children[0].toString()
   }
 
-  eval(env: ASTEnvironment) {
 
+  eval(env: ASTEnvironment) {
+    return null
   }
 
   check(env: ASTEnvironment) {
