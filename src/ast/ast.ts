@@ -136,8 +136,9 @@ class FnCall extends ASTNode {
 
   constructor(node: RawASTNode) {
     super(node)
-    this.id = node.children[0].toString()
     this.params = node.children[1].children.map(createNode)
+    const paramsStr = this.params.map(p => p.valueType).join('_')
+    this.id = `${node.children[0].toString()}_${paramsStr}`
   }
 
   eval(env: ASTEnvironment) {
