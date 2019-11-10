@@ -121,7 +121,8 @@ class FnCall extends ASTNode {
     if (!env.symbols[this.id]) {
       env.errors.push({
         location: this.location,
-        error: 'symbolNotFound'
+        error: 'symbolNotFound',
+        node: this
       })
     }
     return true
