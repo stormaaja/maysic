@@ -8,7 +8,7 @@ interface LineError {
 
 export interface ASTEnvironment {
   errors: LineError[];
-  symbols: {[key: string]: ASTNode[]};
+  symbols: {[key: string]: ASTNode};
 }
 
 class ASTNode {
