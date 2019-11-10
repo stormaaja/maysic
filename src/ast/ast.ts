@@ -73,6 +73,7 @@ class Block extends ASTNode {
   }
 
   eval(env: ASTEnvironment) {
+    this.children.forEach(n => n.eval(env))
   }
 
   check(env: ASTEnvironment) {
