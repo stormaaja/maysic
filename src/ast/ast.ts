@@ -180,11 +180,11 @@ class SymbolNode extends ASTNode {
 
 class FunctionNode extends ASTNode {
   returnType: string
-  params: ASTNode[]
+  args: ASTNode[]
 
   constructor(node: RawASTNode) {
     super(node)
-    this.params = node.children[0].children.map(createNode)
+    this.args = node.children[0].children.map(createNode)
     this.children = node.children.slice(1).map(createNode)
     const lastChild = this.children[this.children.length - 1]
     this.returnType = lastChild ? lastChild.valueType : 'void'
