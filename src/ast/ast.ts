@@ -170,7 +170,7 @@ class SymbolNode extends ASTNode {
   }
 
   eval(env: ASTEnvironment) {
-
+    return null
   }
 
   check(env: ASTEnvironment) {
