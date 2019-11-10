@@ -248,26 +248,55 @@ function createNode(node: RawASTNode): ASTNode {
 }
 
 class SystemFunctionNode extends FunctionNode {
-  handler: (params: ASTNode[]) => void
-  constructor(handler: (params: ASTNode[]) => void, args: TypedParamNode[]) {
+  handler: (env: ASTEnvironment) => ValueNode | null
+  constructor(handler: (env: ASTEnvironment) => ValueNode | null, args: TypedParamNode[]) {
     super({
       type: 'function',
       children: [
-        { children: [], location: {}, type: 'typedParamList' }
+        { children: args, location: {}, type: 'typedParamList' }
       ],
       location: {}
     })
     this.handler = handler
   }
 
-  eval(env: ASTEnvironment) {
-    this.handler([])
+  eval(env: ASTEnvironment): ValueNode | null {
+    return this.handler(env)
   }
+}
+
+function createArguments(symbols: {[key: string]: string}) {
+  return Object.keys(symbols).map(
+    k => {
+      const param = new TypedParamNode(
+        {
+          type: 'typedParam',
+          children: [],
+          location: {}
+        }
+      )
+      param.setNode(symbols[k], k)
+      return param
+    }
+  )
+}
+
+export function addSystemFunctions(env: ASTEnvironment) {
+  env.symbols.print_string =
+    new SystemFunctionNode(
+      (env: ASTEnvironment) => {
+        const p1 = env.symbols.ms_param_0
+        console.log(p1.eval(env)!.getValue())
+        return null
+      }, createArguments({
+        p1: 'string'
+      }))
 }
 
 export function convertToAST(program: RawProgram): ASTProgram {
   const ast = createNode(program.ast)
   const checkEnv: ASTEnvironment = { symbols: {}, errors: [] }
+  addSystemFunctions(checkEnv)
   ast.check(checkEnv)
   return {
     ast, checkEnv
