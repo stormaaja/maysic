@@ -6,12 +6,7 @@ interface LineError {
   node: ASTNode;
 }
 
-interface Environment {
-  errors: LineError[];
-  constants: {[key: string]: ASTNode}
-}
-
-interface ASTEnvironment {
+export interface ASTEnvironment {
   errors: LineError[];
   symbols: {[key: string]: ASTNode[]};
 }
@@ -27,7 +22,7 @@ class ASTNode {
     this.location = node.location
   }
 
-  eval(env: Environment) {}
+  eval(env: ASTEnvironment) {}
   check(env: ASTEnvironment) { return true }
 }
 
@@ -43,7 +38,7 @@ class ConstInteger extends ASTNode {
     this.value = parseInt(node.children[0].toString())
   }
 
-  eval(env: Environment) {
+  eval(env: ASTEnvironment) {
 
   }
 
@@ -60,7 +55,7 @@ class ConstString extends ASTNode {
     this.value = node.children[0].toString()
   }
 
-  eval(env: Environment) {
+  eval(env: ASTEnvironment) {
 
   }
 
@@ -77,8 +72,7 @@ class Block extends ASTNode {
     this.children = node.children.map(createNode)
   }
 
-  eval(env: Environment) {
-
+  eval(env: ASTEnvironment) {
   }
 
   check(env: ASTEnvironment) {
@@ -98,12 +92,12 @@ class Assignment extends ASTNode {
     this.value = createNode(node.children[1])
   }
 
-  eval(env: Environment) {
-    env.constants[this.id] = this.value
+  eval(env: ASTEnvironment) {
+    env.symbols[this.id] = this.value
   }
 
   check(env: ASTEnvironment) {
-    // Check value type
+    // TODO: Check value type
     this.children.forEach(n => n.check(env))
     return true
   }
@@ -119,8 +113,7 @@ class FnCall extends ASTNode {
     this.params = node.children[1].children.map(createNode)
   }
 
-  eval(env: Environment) {
-
+  eval(env: ASTEnvironment) {
   }
 
   check(env: ASTEnvironment) {
@@ -142,7 +135,7 @@ class SymbolNode extends ASTNode {
     this.id = node.children[0].toString()
   }
 
-  eval(env: Environment) {
+  eval(env: ASTEnvironment) {
 
   }
 
@@ -168,7 +161,7 @@ class FunctionNode extends ASTNode {
     this.returnType = lastChild ? lastChild.valueType : 'void'
   }
 
-  eval(env: Environment) {
+  eval(env: ASTEnvironment) {
   }
 
   check(env: ASTEnvironment) {
@@ -182,7 +175,7 @@ class TypedParamNode extends ASTNode {
     this.valueType = node.children[0].toString()
   }
 
-  eval(env: Environment) {
+  eval(env: ASTEnvironment) {
 
   }
 
@@ -228,7 +221,7 @@ class SystemFunctionNode extends FunctionNode {
     this.handler = handler
   }
 
-  eval(env: Environment) {
+  eval(env: ASTEnvironment) {
     this.handler([])
   }
 }
