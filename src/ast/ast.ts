@@ -22,7 +22,10 @@ class ASTNode {
     this.location = node.location
   }
 
-  eval(env: ASTEnvironment) {}
+  eval(env: ASTEnvironment): ValueNode | null {
+    return null
+  }
+
   check(env: ASTEnvironment) { return true }
 }
 
@@ -31,15 +34,23 @@ interface ASTProgram {
   checkEnv: ASTEnvironment;
 }
 
-class ConstInteger extends ASTNode {
+interface ValueNode {
+  getValue(): string
+}
+
+class ConstInteger extends ASTNode implements ValueNode {
   value: number
   constructor(node: RawASTNode) {
     super(node)
     this.value = parseInt(node.children[0].toString())
   }
 
-  eval(env: ASTEnvironment) {
+  getValue() {
+    return this.value.toString()
+  }
 
+  eval(env: ASTEnvironment) {
+    return this
   }
 
   check(env: ASTEnvironment) {
@@ -47,7 +58,7 @@ class ConstInteger extends ASTNode {
   }
 }
 
-class ConstString extends ASTNode {
+class ConstString extends ASTNode implements ValueNode {
   value: string
   valueType: string = 'string'
   constructor(node: RawASTNode) {
@@ -55,8 +66,12 @@ class ConstString extends ASTNode {
     this.value = node.children[0].toString()
   }
 
-  eval(env: ASTEnvironment) {
+  getValue() {
+    return this.value
+  }
 
+  eval(env: ASTEnvironment) {
+    return this
   }
 
   check(env: ASTEnvironment) {
@@ -73,7 +88,8 @@ class Block extends ASTNode {
   }
 
   eval(env: ASTEnvironment) {
-    this.children.forEach(n => n.eval(env))
+    const results = this.children.map(n => n.eval(env))
+    return results[results.length - 1]
   }
 
   check(env: ASTEnvironment) {
@@ -95,6 +111,7 @@ class Assignment extends ASTNode {
 
   eval(env: ASTEnvironment) {
     env.symbols[this.id] = this.value
+    return null
   }
 
   check(env: ASTEnvironment) {
@@ -115,6 +132,11 @@ class FnCall extends ASTNode {
   }
 
   eval(env: ASTEnvironment) {
+    const symbols = env.symbols
+    this.params.forEach((p, i) => { env.symbols[`ms_param_${i}`] = p })
+    env.symbols[this.id].eval(env)
+    env.symbols = symbols
+    return null
   }
 
   check(env: ASTEnvironment) {
