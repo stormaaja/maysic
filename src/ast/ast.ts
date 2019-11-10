@@ -27,7 +27,7 @@ class ASTNode {
 }
 
 interface ASTProgram {
-  ast?: ASTNode;
+  ast: ASTNode;
   checkEnv: ASTEnvironment;
 }
 
