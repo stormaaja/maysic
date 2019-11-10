@@ -1,5 +1,5 @@
 import { parseFile } from './parser'
-import { convertToAST } from './ast/ast'
+import { convertToAST, addSystemFunctions, ASTEnvironment } from './ast/ast'
 
 function main(args: string[]) {
   if (args.length < 3) {
@@ -18,8 +18,12 @@ function main(args: string[]) {
         console.error(JSON.stringify(program.checkEnv.errors, null, 1))
       } else {
         if (args.indexOf('--eval') > -1) {
+          const env: ASTEnvironment = {
+            symbols: {}, errors: []
+          }
+          addSystemFunctions(env)
           program.ast.eval(
-            { errors: [], constants: {} }
+            env
           )
         }
       }
