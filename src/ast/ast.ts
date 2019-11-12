@@ -187,10 +187,12 @@ class SymbolNode extends ASTNode {
   }
 
   eval(env: ASTEnvironment) {
+    this.valueType = env.symbols[this.id].valueType
     return null
   }
 
   check(env: ASTEnvironment) {
+    this.valueType = env.symbols[this.id].valueType
     return true
   }
 }
