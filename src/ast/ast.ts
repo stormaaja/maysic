@@ -111,6 +111,7 @@ class Assignment extends ASTNode {
     this.children = []
     this.id = node.children[0].toString()
     this.value = createNode(node.children[1])
+    this.valueType = this.value.valueType
   }
 
   eval(env: ASTEnvironment) {
