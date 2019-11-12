@@ -147,19 +147,26 @@ class FnCall extends ASTNode {
   constructor(node: RawASTNode) {
     super(node)
     this.params = node.children[1].children.map(createNode)
-    const paramsStr = this.params.map(p => p.valueType).join('_')
-    this.id = `${node.children[0].toString()}_${paramsStr}`
+    this.id = node.children[0].toString()
+  }
+
+  getSymbolId() {
+    const paramsStr = this.params.length > 0 ? this.params.map(p => p.valueType).join('_') : 'void'
+    return `${this.id}_${paramsStr}`
   }
 
   eval(env: ASTEnvironment) {
     const symbols = env.symbols
     this.params.forEach((p, i) => { env.symbols[`ms_param_${i}`] = p })
-    env.symbols[this.id].eval(env)
+    this.params.forEach(p => { if (p.type === 'symbol') p.eval(env) })
+    const returnValue = env.symbols[this.getSymbolId()].eval(env)
     env.symbols = symbols
-    return null
+    return returnValue
   }
 
   check(env: ASTEnvironment) {
+    this.params.forEach(p => p.check(env))
+    this.id = this.getSymbolId()
     if (!env.symbols[this.id]) {
       env.errors.push({
         location: this.location,
