@@ -209,11 +209,33 @@ class FunctionNode extends ASTNode {
     this.returnType = lastChild ? lastChild.valueType : 'void'
   }
 
-  eval(env: ASTEnvironment): ValueNode | null{
-    return null
+  getAstSymbolId() {
+    return this.args.length > 0 ? this.args.map(p => p.valueType).join('_') : 'void'
+  }
+
+  eval(env: ASTEnvironment): ValueNode | null {
+    const symbols = env.symbols
+    const params = []
+    let i = 0
+    while (env.symbols[`ms_param_${i}`]) {
+      params.push(env.symbols[`ms_param_${i}`])
+      i++
+    }
+    const values = this.children.map(c => c.eval(env))
+    env.symbols = symbols
+    return values[values.length - 1]
   }
 
   check(env: ASTEnvironment) {
+    const symbols = env.symbols
+    const params = []
+    let i = 0
+    while (env.symbols[`ms_param_${i}`]) {
+      params.push(env.symbols[`ms_param_${i}`])
+      i++
+    }
+    this.children.forEach(c => c.check(env))
+    env.symbols = symbols
     return true
   }
 }
