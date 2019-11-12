@@ -46,6 +46,7 @@ class ConstInteger extends ASTNode implements ValueNode {
   constructor(node: RawASTNode) {
     super(node)
     this.value = parseInt(node.children[0].toString())
+    this.valueType = 'integer'
   }
 
   getValue() {
