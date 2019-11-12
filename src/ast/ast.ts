@@ -23,6 +23,8 @@ class ASTNode {
     this.location = node.location
   }
 
+  getAstSymbolId(): string { return '' }
+
   eval(env: ASTEnvironment): ValueNode | null {
     return null
   }
