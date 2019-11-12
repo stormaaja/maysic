@@ -114,21 +114,26 @@ class Assignment extends ASTNode {
   }
 
   eval(env: ASTEnvironment) {
-    env.symbols[this.id] = this.value
+    if (this.value.type === 'function') {
+      env.symbols[`${this.id}_${this.value.getAstSymbolId()}`] = this.value
+    } else {
+      env.symbols[this.id] = this.value
+    }
     return null
   }
 
   check(env: ASTEnvironment) {
-    // TODO: Check value type
-    this.children.forEach(n => n.check(env))
-    if (env.symbols[this.id]) {
+    this.value.check(env)
+    const symbolId = this.value.type === 'function' ? `${this.id}_${this.value.getAstSymbolId()}` : this.id
+    if (env.symbols[symbolId]) {
       env.errors.push({
         location: this.location,
         error: 'symbolAlreadyExists', // TODO: add support for function overload
-        node: this
+        node: this,
+        meta: { symbolId }
       })
     } else {
-      env.symbols[this.id] = this.value
+      env.symbols[symbolId] = this.value
     }
     return true
   }
