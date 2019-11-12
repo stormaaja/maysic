@@ -4,6 +4,7 @@ interface LineError {
   location: {start?: ASTLocation, end?: ASTLocation};
   error: string;
   node: ASTNode;
+  meta?: { [key: string]: string };
 }
 
 export interface ASTEnvironment {
