@@ -4,7 +4,8 @@
   "description": "Maysic Parser",
   "main": "src/parser.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "coverage": "jest --coverage",
     "build": "tsc && cp -r lib out/",
     "gen-parser": "syntax-cli --loc -g resources/lexer.g -m LALR1 -r -d -o lib/Parser/yyparse.js && npm run build",
     "watch": "tsc -w",
@@ -15,7 +16,8 @@
     "url": "git+https://github.com/stormaaja/maysic.git"
   },
   "keywords": [
-    "compiler", "parser"
+    "compiler",
+    "parser"
   ],
   "author": "Matti Ahinko",
   "license": "MIT",
@@ -24,6 +26,7 @@
   },
   "homepage": "https://github.com/stormaaja/maysic#readme",
   "devDependencies": {
+    "@types/jest": "^24.0.23",
     "@types/node": "^12.11.7",
     "@typescript-eslint/eslint-plugin": "^2.6.0",
     "@typescript-eslint/parser": "^2.6.0",
@@ -31,11 +34,14 @@
     "eslint-config-prettier": "^6.5.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^23.0.4",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "prettier": "^1.18.2"
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.1.0"
   },
   "dependencies": {
     "syntax-cli": "^0.1.12",

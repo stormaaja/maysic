@@ -4,7 +4,8 @@ module.exports = {
     node: true
   },
   extends: [
-    'standard'
+    'standard',
+    'plugin:jest/recommended'
   ],
   globals: {
     Atomics: 'readonly',
@@ -16,7 +17,8 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: [
-    '@typescript-eslint'
+    '@typescript-eslint',
+    'jest'
   ],
   rules: {
     "space-before-function-paren": ["error", {"named": "never"}]
