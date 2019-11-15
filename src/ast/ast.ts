@@ -7,9 +7,12 @@ interface LineError {
   meta?: { [key: string]: string };
 }
 
-export interface ASTEnvironment {
-  errors: LineError[];
+interface Environment {
   symbols: {[key: string]: ASTNode};
+}
+
+export interface ASTEnvironment extends Environment {
+  errors: LineError[];
 }
 
 class ASTNode {
