@@ -1,5 +1,17 @@
 import { parseFile } from './parser'
-import { convertToAST, addSystemFunctions, ASTEnvironment } from './ast/ast'
+import { ASTEnvironment, ASTProgram, createNode } from './ast/ast'
+import { addSystemFunctions } from './ast/system'
+import { RawProgram } from '../lib/Parser/program'
+
+function convertToAST(program: RawProgram): ASTProgram {
+  const ast = createNode(program.ast)
+  const checkEnv: ASTEnvironment = { symbols: {}, errors: [] }
+  addSystemFunctions(checkEnv)
+  ast.check(checkEnv)
+  return {
+    ast, checkEnv
+  }
+}
 
 function main(args: string[]) {
   if (args.length < 3) {

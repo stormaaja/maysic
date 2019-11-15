@@ -1,4 +1,4 @@
-import { RawProgram, RawASTNode, ASTLocation } from '../../lib/Parser/program'
+import { RawASTNode, ASTLocation } from '../../lib/Parser/program'
 
 interface LineError {
   location: {start?: ASTLocation, end?: ASTLocation};
@@ -23,7 +23,7 @@ export interface ASTEnvironment extends Environment {
   errors: LineError[];
 }
 
-class ASTNode {
+export class ASTNode {
   children: ASTNode[] = [];
   type: string;
   valueType: string = 'void'
@@ -43,12 +43,12 @@ class ASTNode {
   check(env: ASTEnvironment, args: ASTNode[] = []) { return true }
 }
 
-interface ASTProgram {
+export interface ASTProgram {
   ast: ASTNode;
   checkEnv: ASTEnvironment;
 }
 
-interface ValueNode {
+export interface ValueNode {
   getValue(): string
 }
 
@@ -198,7 +198,7 @@ class SymbolNode extends ASTNode {
   }
 }
 
-class FunctionNode extends ASTNode {
+export class FunctionNode extends ASTNode {
   returnType: string
   args: ASTNode[]
 
@@ -235,7 +235,7 @@ class FunctionNode extends ASTNode {
   }
 }
 
-class TypedParamNode extends ASTNode {
+export class TypedParamNode extends ASTNode {
   symbol: string = ''
 
   constructor(node: RawASTNode) {
@@ -263,7 +263,7 @@ class TypedParamNode extends ASTNode {
   }
 }
 
-function createNode(node: RawASTNode): ASTNode {
+export function createNode(node: RawASTNode): ASTNode {
   switch (node.type) {
     case 'block':
       return new Block(node)
@@ -284,70 +284,5 @@ function createNode(node: RawASTNode): ASTNode {
     default:
       console.debug(JSON.stringify(node, null, 1))
       throw new Error(`Unknown type: ${node.type}`)
-  }
-}
-
-class SystemFunctionNode extends FunctionNode {
-  handler: (env: ASTEnvironment, args: ASTNode[]) => ValueNode | null
-  constructor(handler: (env: ASTEnvironment, args: ASTNode[]) => ValueNode | null, args: TypedParamNode[]) {
-    super({
-      type: 'function',
-      children: [
-        { children: args, location: {}, type: 'typedParamList' }
-      ],
-      location: {}
-    })
-    this.handler = handler
-  }
-
-  eval(env: ASTEnvironment, args: ASTNode[]): ValueNode | null {
-    return this.handler(env, args)
-  }
-}
-
-function createArguments(symbols: {[key: string]: string}) {
-  return Object.keys(symbols).map(
-    k => {
-      const param = new TypedParamNode(
-        {
-          type: 'typedParam',
-          children: [],
-          location: {}
-        }
-      )
-      param.setNode(symbols[k], k)
-      return param
-    }
-  )
-}
-
-export function addSystemFunctions(env: ASTEnvironment) {
-  env.symbols.print_string =
-    new SystemFunctionNode(
-      (env: ASTEnvironment, args: ASTNode[]) => {
-        const p1 = args[0]
-        console.log(p1.eval(env)!.getValue())
-        return null
-      }, createArguments({
-        p1: 'string'
-      }))
-  env.symbols.print_integer =
-    new SystemFunctionNode(
-      (env: ASTEnvironment, args: ASTNode[]) => {
-        const p1 = args[0]
-        console.log(p1.eval(env)!.getValue())
-        return null
-      }, createArguments({
-        p1: 'integer'
-      }))
-}
-
-export function convertToAST(program: RawProgram): ASTProgram {
-  const ast = createNode(program.ast)
-  const checkEnv: ASTEnvironment = { symbols: {}, errors: [] }
-  addSystemFunctions(checkEnv)
-  ast.check(checkEnv)
-  return {
-    ast, checkEnv
   }
 }
