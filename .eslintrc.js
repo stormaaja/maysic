@@ -22,7 +22,19 @@ module.exports = {
   ],
   rules: {
     "space-before-function-paren": ["error", {"named": "never"}],
-    quotes: ["error", "double"]
+    quotes: ["error", "double"],
+    "@typescript-eslint/member-delimiter-style": [
+      "error", 
+      {
+        multiline: {
+          delimiter: 'semi',
+          requireLast: true,
+        },
+        singleline: {
+          delimiter: 'semi',
+          requireLast: false,
+        }
+      }]
   },
   overrides: [
     {

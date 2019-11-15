@@ -10,7 +10,7 @@ export interface ASTLocation {
 export interface RawASTNode {
   children: RawASTNode[];
   type: string;
-  location: { start?: ASTLocation; end?: ASTLocation }
+  location: { start?: ASTLocation; end?: ASTLocation };
 }
 
 export interface RawProgram {

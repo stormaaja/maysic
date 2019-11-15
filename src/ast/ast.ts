@@ -1,7 +1,7 @@
 import { RawASTNode, ASTLocation } from "../../lib/Parser/program"
 
 interface LineError {
-  location: {start?: ASTLocation, end?: ASTLocation};
+  location: {start?: ASTLocation; end?: ASTLocation};
   error: string;
   node: ASTNode;
   meta?: { [key: string]: string };
@@ -27,7 +27,7 @@ export class ASTNode {
   children: ASTNode[] = [];
   type: string;
   valueType: string = "void"
-  location: { start?: ASTLocation, end?: ASTLocation }
+  location: { start?: ASTLocation; end?: ASTLocation }
 
   constructor(node: RawASTNode) {
     this.type = node.type
@@ -49,7 +49,7 @@ export interface ASTProgram {
 }
 
 export interface ValueNode {
-  getValue(): string
+  getValue(): string;
 }
 
 class ConstInteger extends ASTNode implements ValueNode {
