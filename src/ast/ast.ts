@@ -135,7 +135,6 @@ class Assignment extends ASTNode {
   }
 
   check(env: ASTEnvironment) {
-    this.value.check(env)
     const symbolId = this.value.type === 'function' ? `${this.id}_${this.value.getAstSymbolId()}` : this.id
     if (env.symbols[symbolId]) {
       env.errors.push({
