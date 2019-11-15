@@ -7,6 +7,14 @@ interface LineError {
   meta?: { [key: string]: string };
 }
 
+function createError(node: ASTNode, error: string): LineError {
+  return {
+    location: node.location,
+    error: error,
+    node: node
+  }
+}
+
 interface Environment {
   symbols: {[key: string]: ASTNode};
 }
