@@ -331,6 +331,15 @@ export function addSystemFunctions(env: ASTEnvironment) {
       }, createArguments({
         p1: 'string'
       }))
+  env.symbols.print_integer =
+    new SystemFunctionNode(
+      (env: ASTEnvironment, args: ASTNode[]) => {
+        const p1 = args[0]
+        console.log(p1.eval(env)!.getValue())
+        return null
+      }, createArguments({
+        p1: 'integer'
+      }))
 }
 
 export function convertToAST(program: RawProgram): ASTProgram {
