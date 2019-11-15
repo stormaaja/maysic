@@ -1,6 +1,6 @@
-import { RawProgram } from './program'
+import { RawProgram } from "./program"
 
 interface Parser {
   parse: (s: string) => RawProgram
 }
-export const Parser: Parser = require('./yyparse.js')
+export const Parser: Parser = require("./yyparse.js")

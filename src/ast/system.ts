@@ -1,12 +1,12 @@
-import { FunctionNode, ASTNode, ASTEnvironment, ValueNode, TypedParamNode } from './ast'
+import { FunctionNode, ASTNode, ASTEnvironment, ValueNode, TypedParamNode } from "./ast"
 
 class SystemFunctionNode extends FunctionNode {
   handler: (env: ASTEnvironment, args: ASTNode[]) => ValueNode | null
   constructor(handler: (env: ASTEnvironment, args: ASTNode[]) => ValueNode | null, args: TypedParamNode[]) {
     super({
-      type: 'function',
+      type: "function",
       children: [
-        { children: args, location: {}, type: 'typedParamList' }
+        { children: args, location: {}, type: "typedParamList" }
       ],
       location: {}
     })
@@ -23,7 +23,7 @@ function createArguments(symbols: {[key: string]: string}) {
     k => {
       const param = new TypedParamNode(
         {
-          type: 'typedParam',
+          type: "typedParam",
           children: [],
           location: {}
         }
@@ -42,7 +42,7 @@ export function addSystemFunctions(env: ASTEnvironment) {
         console.log(p1.eval(env)!.getValue())
         return null
       }, createArguments({
-        p1: 'string'
+        p1: "string"
       }))
   env.symbols.print_integer =
     new SystemFunctionNode(
@@ -51,6 +51,6 @@ export function addSystemFunctions(env: ASTEnvironment) {
         console.log(p1.eval(env)!.getValue())
         return null
       }, createArguments({
-        p1: 'integer'
+        p1: "integer"
       }))
 }

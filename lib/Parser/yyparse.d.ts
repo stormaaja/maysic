@@ -1,4 +1,4 @@
-import { RawProgram } from './program'
+import { RawProgram } from "./program"
 
 export declare class yyparse {
   // setOptions(options: any): ...;

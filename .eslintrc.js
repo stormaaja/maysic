@@ -21,7 +21,8 @@ module.exports = {
     'jest'
   ],
   rules: {
-    "space-before-function-paren": ["error", {"named": "never"}]
+    "space-before-function-paren": ["error", {"named": "never"}],
+    quotes: ["error", "double"]
   },
   overrides: [
     {
