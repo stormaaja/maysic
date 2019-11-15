@@ -36,11 +36,11 @@ class ASTNode {
 
   getAstSymbolId(): string { return '' }
 
-  eval(env: ASTEnvironment): ValueNode | null {
+  eval(env: ASTEnvironment, args: ASTNode[] = []): ValueNode | null {
     return null
   }
 
-  check(env: ASTEnvironment) { return true }
+  check(env: ASTEnvironment, args: ASTNode[] = []) { return true }
 }
 
 interface ASTProgram {
@@ -224,28 +224,22 @@ class FunctionNode extends ASTNode {
     return this.args.length > 0 ? this.args.map(p => p.valueType).join('_') : 'void'
   }
 
-  eval(env: ASTEnvironment): ValueNode | null {
-    const symbols = env.symbols
-    const params = []
-    let i = 0
-    while (env.symbols[`ms_param_${i}`]) {
-      params.push(env.symbols[`ms_param_${i}`])
-      i++
-    }
+  eval(env: ASTEnvironment, args: ASTNode[]): ValueNode | null {
+    const symbols = Object.assign({}, env.symbols)
+    args.forEach((a, i) => { env.symbols[this.args[i].getAstSymbolId()] = a })
     const values = this.children.map(c => c.eval(env))
     env.symbols = symbols
     return values[values.length - 1]
   }
 
-  check(env: ASTEnvironment) {
-    const symbols = env.symbols
-    const params = []
-    let i = 0
-    while (env.symbols[`ms_param_${i}`]) {
-      params.push(env.symbols[`ms_param_${i}`])
-      i++
+  check(env: ASTEnvironment, args: ASTNode[]) {
+    const symbols = Object.assign({}, env.symbols)
+    if (this.args.length !== args.length) {
+      env.errors.push(createError(this, 'tooFewArguments'))
+    } else {
+      args.forEach((p, i) => { env.symbols[this.args[i].getAstSymbolId()] = p })
     }
-    this.children.forEach(c => c.check(env))
+    this.children.map(c => c.check(env))
     env.symbols = symbols
     return true
   }
@@ -300,8 +294,8 @@ function createNode(node: RawASTNode): ASTNode {
 }
 
 class SystemFunctionNode extends FunctionNode {
-  handler: (env: ASTEnvironment) => ValueNode | null
-  constructor(handler: (env: ASTEnvironment) => ValueNode | null, args: TypedParamNode[]) {
+  handler: (env: ASTEnvironment, args: ASTNode[]) => ValueNode | null
+  constructor(handler: (env: ASTEnvironment, args: ASTNode[]) => ValueNode | null, args: TypedParamNode[]) {
     super({
       type: 'function',
       children: [
@@ -312,8 +306,8 @@ class SystemFunctionNode extends FunctionNode {
     this.handler = handler
   }
 
-  eval(env: ASTEnvironment): ValueNode | null {
-    return this.handler(env)
+  eval(env: ASTEnvironment, args: ASTNode[]): ValueNode | null {
+    return this.handler(env, args)
   }
 }
 
@@ -336,8 +330,8 @@ function createArguments(symbols: {[key: string]: string}) {
 export function addSystemFunctions(env: ASTEnvironment) {
   env.symbols.print_string =
     new SystemFunctionNode(
-      (env: ASTEnvironment) => {
-        const p1 = env.symbols.ms_param_0
+      (env: ASTEnvironment, args: ASTNode[]) => {
+        const p1 = args[0]
         console.log(p1.eval(env)!.getValue())
         return null
       }, createArguments({
