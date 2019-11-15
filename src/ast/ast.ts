@@ -161,30 +161,20 @@ class FnCall extends ASTNode {
     this.id = node.children[0].toString()
   }
 
-  getSymbolId() {
+  getAstSymbolId() {
     const paramsStr = this.params.length > 0 ? this.params.map(p => p.valueType).join('_') : 'void'
     return `${this.id}_${paramsStr}`
   }
 
   eval(env: ASTEnvironment) {
-    const symbols = env.symbols
-    this.params.forEach((p, i) => { env.symbols[`ms_param_${i}`] = p })
     this.params.forEach(p => { if (p.type === 'symbol') p.eval(env) })
-    const returnValue = env.symbols[this.getSymbolId()].eval(env)
-    env.symbols = symbols
+    const returnValue = env.symbols[this.getAstSymbolId()].eval(env, this.params)
     return returnValue
   }
 
   check(env: ASTEnvironment) {
-    this.params.forEach(p => p.check(env))
-    this.id = this.getSymbolId()
-    if (!env.symbols[this.id]) {
-      env.errors.push({
-        location: this.location,
-        error: 'symbolNotFound',
-        node: this
-      })
-    }
+    this.params.forEach(p => { if (p.type === 'symbol') p.check(env) })
+    env.symbols[this.getAstSymbolId()].check(env, this.params)
     return true
   }
 }
@@ -199,7 +189,7 @@ class SymbolNode extends ASTNode {
 
   eval(env: ASTEnvironment) {
     this.valueType = env.symbols[this.id].valueType
-    return null
+    return env.symbols[this.id].eval(env)
   }
 
   check(env: ASTEnvironment) {
@@ -253,6 +243,10 @@ class TypedParamNode extends ASTNode {
     if (node.children.length > 0) {
       this.setNode(node.children[0].toString(), node.children[1].toString())
     }
+  }
+
+  getAstSymbolId() {
+    return this.symbol
   }
 
   setNode(valueType: string, symbol: string) {
