@@ -5,6 +5,7 @@
   "main": "src/parser.ts",
   "scripts": {
     "test": "jest",
+    "test-watch": "jest --watch",
     "coverage": "jest --coverage",
     "build": "tsc && cp -r lib out/",
     "gen-parser": "syntax-cli --loc -g resources/lexer.g -m LALR1 -r -d -o lib/Parser/yyparse.js && npm run build",
