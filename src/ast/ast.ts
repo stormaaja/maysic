@@ -135,7 +135,8 @@ class Assignment extends ASTNode {
   }
 
   check(env: ASTEnvironment) {
-    const symbolId = this.value.type === "function" ? `${this.id}_${this.value.getAstSymbolId()}` : this.id
+    const symbolId = this.value.type === "function"
+      ? `${this.id}_${this.value.getAstSymbolId()}` : this.id
     if (env.symbols[symbolId]) {
       env.errors.push({
         location: this.location,
@@ -161,13 +162,15 @@ class FnCall extends ASTNode {
   }
 
   getAstSymbolId() {
-    const paramsStr = this.params.length > 0 ? this.params.map(p => p.valueType).join("_") : "void"
+    const paramsStr = this.params.length > 0
+      ? this.params.map(p => p.valueType).join("_") : "void"
     return `${this.id}_${paramsStr}`
   }
 
   eval(env: ASTEnvironment) {
     this.params.forEach(p => { if (p.type === "symbol") p.eval(env) })
-    const returnValue = env.symbols[this.getAstSymbolId()].eval(env, this.params)
+    const returnValue = env.symbols[this.getAstSymbolId()].eval(
+      env, this.params)
     return returnValue
   }
 
@@ -210,7 +213,8 @@ export class FunctionNode extends ASTNode {
   }
 
   getAstSymbolId() {
-    return this.args.length > 0 ? this.args.map(p => p.valueType).join("_") : "void"
+    return this.args.length > 0
+      ? this.args.map(p => p.valueType).join("_") : "void"
   }
 
   eval(env: ASTEnvironment, args: ASTNode[]): ValueNode | null {

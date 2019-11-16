@@ -1,8 +1,15 @@
-import { FunctionNode, ASTNode, ASTEnvironment, ValueNode, TypedParamNode } from "./ast"
+import {
+  FunctionNode,
+  ASTNode,
+  ASTEnvironment,
+  ValueNode,
+  TypedParamNode
+} from "./ast"
 
 class SystemFunctionNode extends FunctionNode {
   handler: (env: ASTEnvironment, args: ASTNode[]) => ValueNode | null
-  constructor(handler: (env: ASTEnvironment, args: ASTNode[]) => ValueNode | null, args: TypedParamNode[]) {
+  constructor(handler: (env: ASTEnvironment,
+    args: ASTNode[]) => ValueNode | null, args: TypedParamNode[]) {
     super({
       type: "function",
       children: [
