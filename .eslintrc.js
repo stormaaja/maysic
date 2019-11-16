@@ -34,7 +34,8 @@ module.exports = {
           delimiter: 'semi',
           requireLast: false,
         }
-      }]
+      }],
+      "max-len": ["error", { "code": 80 }]
   },
   overrides: [
     {
