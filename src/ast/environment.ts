@@ -1,4 +1,4 @@
-import { ASTNode } from "./"
+import { ASTNode } from "./astnode"
 import { LineError } from "./error"
 
 export interface Environment {

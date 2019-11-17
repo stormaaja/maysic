@@ -1,5 +1,5 @@
 import { ASTLocation } from "../../lib/Parser/program"
-import { ASTNode } from "./"
+import { ASTNode } from "./astnode"
 
 export interface LineError {
   location: {start?: ASTLocation; end?: ASTLocation};

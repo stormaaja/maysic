@@ -1,5 +1,5 @@
 import { ASTEnvironment } from "./environment"
-import { ASTNode } from "./"
+import { ASTNode } from "./astnode"
 import { RawASTNode } from "../../lib/Parser/program"
 
 export interface ValueNode {

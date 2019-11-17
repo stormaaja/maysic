@@ -1,5 +1,6 @@
 import { RawASTNode } from "../../lib/Parser/program"
-import { ASTNode, createNode } from "."
+import { createNode } from "."
+import { ASTNode } from "./astnode"
 import { createError } from "./error"
 import { ASTEnvironment } from "./environment"
 import { ValueNode } from "./valuenode"

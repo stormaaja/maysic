@@ -1,5 +1,5 @@
 import { FunctionNode, TypedParamNode } from "./function"
-import { ASTNode } from "./"
+import { ASTNode } from "./astnode"
 import { ASTEnvironment } from "./environment"
 import { ValueNode } from "./valuenode"
 

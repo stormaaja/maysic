@@ -1,4 +1,5 @@
-import { ASTNode, createNode } from "./"
+import { createNode } from "./"
+import { ASTNode } from "./astnode"
 import { RawASTNode } from "../../lib/Parser/program"
 import { ASTEnvironment } from "./environment"
 
