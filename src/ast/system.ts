@@ -1,10 +1,7 @@
-import {
-  FunctionNode,
-  ASTNode,
-  ASTEnvironment,
-  ValueNode,
-  TypedParamNode
-} from "./ast"
+import { FunctionNode, TypedParamNode } from "./function"
+import { ASTNode } from "./"
+import { ASTEnvironment } from "./environment"
+import { ValueNode } from "./valuenode"
 
 class SystemFunctionNode extends FunctionNode {
   handler: (env: ASTEnvironment, args: ASTNode[]) => ValueNode | null

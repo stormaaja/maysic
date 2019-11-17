@@ -1,5 +1,6 @@
 import { parseFile } from "./parser"
-import { ASTEnvironment, ASTProgram, createNode } from "./ast/ast"
+import { ASTProgram, createNode } from "./ast/"
+import { ASTEnvironment } from "./ast/environment"
 import { addSystemFunctions } from "./ast/system"
 import { RawProgram } from "../lib/Parser/program"
 
