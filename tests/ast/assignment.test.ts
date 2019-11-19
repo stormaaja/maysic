@@ -1,29 +1,5 @@
 import { Assignment } from "../../src/ast/assignment"
-import { RawASTNode } from "../../lib/Parser/program"
-
-class IntegerNode implements RawASTNode {
-  children: RawASTNode[] = []
-  type: string = ""
-  location = {}
-  value: number
-  constructor(value: number) {
-    this.value = value
-  }
-
-  toString() { return this.value.toString() }
-}
-
-class StringNode implements RawASTNode {
-  children: RawASTNode[] = []
-  type: string = ""
-  location = {}
-  value: string
-  constructor(value: string) {
-    this.value = value
-  }
-
-  toString() { return this.value }
-}
+import { StringNode, IntegerNode } from "./valuenodes"
 
 describe("Create assignment node", () => {
   it("creates simple integer assignment", () => {
