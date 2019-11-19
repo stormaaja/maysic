@@ -22,7 +22,7 @@ class SystemFunctionNode extends FunctionNode {
   }
 }
 
-function createArguments(symbols: {[key: string]: string}) {
+export function createArguments(symbols: {[key: string]: string}) {
   return Object.keys(symbols).map(
     k => {
       const param = new TypedParamNode(
