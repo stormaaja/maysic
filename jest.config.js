@@ -4,7 +4,7 @@ module.exports = {
   testRegex: "/tests/.*\\.(test|spec)?\\.ts$",
   moduleFileExtensions: ["ts", "js"],
   collectCoverageFrom: [
-    "src/**/{!(ignore-me),}.(js|ts)",
+    "src/**/*.(js|ts)",
     "lib/**/{!(yyparse.js),}.(js|ts)"
   ]
 }
