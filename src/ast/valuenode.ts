@@ -2,37 +2,13 @@ import { ASTEnvironment } from "./environment"
 import { ASTNode } from "./astnode"
 import { RawASTNode } from "../../lib/Parser/program"
 
-export interface ValueNode {
-  getValue(): string;
-}
-
-export class ConstInteger extends ASTNode implements ValueNode {
-  value: number
-  constructor(node: RawASTNode) {
-    super(node)
-    this.value = parseInt(node.children[0].toString())
-    this.valueType = "integer"
-  }
-
-  getValue() {
-    return this.value.toString()
-  }
-
-  eval(env: ASTEnvironment) {
-    return this
-  }
-
-  check(env: ASTEnvironment) {
-    return true
-  }
-}
-
-export class ConstString extends ASTNode implements ValueNode {
+export class ValueNode extends ASTNode {
   value: string
-  valueType: string = "string"
-  constructor(node: RawASTNode) {
+  valueType: string
+  constructor(node: RawASTNode, valueType: string) {
     super(node)
     this.value = node.children[0].toString()
+    this.valueType = valueType
   }
 
   getValue() {
@@ -45,5 +21,17 @@ export class ConstString extends ASTNode implements ValueNode {
 
   check(env: ASTEnvironment) {
     return true
+  }
+}
+
+export class ConstInteger extends ValueNode {
+  constructor(node: RawASTNode) {
+    super(node, "integer")
+  }
+}
+
+export class ConstString extends ValueNode {
+  constructor(node: RawASTNode) {
+    super(node, "string")
   }
 }
