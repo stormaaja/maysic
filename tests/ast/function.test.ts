@@ -2,19 +2,43 @@ import { FunctionNode, FnCall } from "../../src/ast/function"
 import { createArguments } from "../../src/ast/system"
 import { StringNode } from "./valuenodes"
 
+function createFunctionNode(args: {[key: string]: string}) {
+  return new FunctionNode({
+    type: "function",
+    children: [
+      {
+        type: "typedParamList",
+        children: createArguments(args),
+        location: {}
+      }
+    ],
+    location: {}
+  })
+}
+
+function createFunctionCallNode() {
+  return new FnCall({
+    type: "fnCall",
+    children: [
+      new StringNode("test"),
+      {
+        type: "paramList",
+        children: [],
+        location: {}
+      }
+    ],
+    location: {}
+  })
+}
+
 describe("Create function node", () => {
   it("creates empty function", () => {
-    const fn = new FunctionNode({
-      type: "function",
-      children: [
-        {
-          type: "typedParamList",
-          children: createArguments({ p1: "string" }),
-          location: {}
-        }
-      ],
-      location: {}
-    })
+    const fn = createFunctionNode({})
+    expect(fn.args.length).toBe(0)
+    expect(fn.children.length).toBe(0)
+  })
+  it("creates function with a arg", () => {
+    const fn = createFunctionNode({ p1: "string" })
     expect(fn.args.length).toBe(1)
     expect(fn.children.length).toBe(0)
   })
@@ -22,19 +46,19 @@ describe("Create function node", () => {
 
 describe("Create function call node", () => {
   it("creates function call without params", () => {
-    const fnCall = new FnCall({
-      type: "fnCall",
-      children: [
-        new StringNode("test"),
-        {
-          type: "paramList",
-          children: [],
-          location: {}
-        }
-      ],
-      location: {}
-    })
+    const fnCall = createFunctionCallNode()
     expect(fnCall.params.length).toBe(0)
     expect(fnCall.id).toBe("test")
+
+    const fn = createFunctionNode({})
+
+    const env = {
+      errors: [],
+      symbols: { test_void: fn }
+    }
+
+    fnCall.check(env)
+    expect(env.errors.length).toBe(0)
+    expect(env.symbols).toStrictEqual({ test_void: fn })
   })
 })
