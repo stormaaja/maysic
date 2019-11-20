@@ -18,9 +18,11 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
-    'jest'
+    'jest',
+    "prettier"
   ],
   rules: {
+    "prettier/prettier": "error",
     "space-before-function-paren": ["error", {"named": "never"}],
     quotes: ["error", "double"],
     "@typescript-eslint/member-delimiter-style": [
