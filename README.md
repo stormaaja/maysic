@@ -1,4 +1,7 @@
 # maysic
+
+**! This repository is archived and development is discontinued !**
+
 Maysic compiler
 
 ## Parser
